@@ -1,0 +1,17 @@
+site_id,street,pm25,pm10
+A01,Street A,14,28
+A02,Street A,18,32
+A03,Street A,12,27
+A04,Street A,21,35
+A05,Street A,16,29
+A06,Street A,19,35
+A07,Street A,15,34
+A08,Street A,17,32
+B01,Street B,9,20
+B02,Street B,15,29
+B03,Street B,11,22
+B04,Street B,13,26
+B05,Street B,10,23
+B06,Street B,14,25
+B07,Street B,12,27
+B08,Street B,16,31

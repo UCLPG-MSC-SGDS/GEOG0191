@@ -1,0 +1,222 @@
+[
+  {
+    "objectID": "10-london_airquality_ttests.html",
+    "href": "10-london_airquality_ttests.html",
+    "title": "London Air Quality II",
+    "section": "",
+    "text": "Use the same practice CSV and compare PM₂.₅ on Street A and Street B. The example treats each row as a separate sampling point and assumes observations are independent. For your fieldwork, decide what counts as one observation before comparing groups.\n\nair &lt;- read.csv(\"data/london-air-quality-practice.csv\")\nstreet_a &lt;- air$pm25[air$street == \"Street A\"]\nstreet_b &lt;- air$pm25[air$street == \"Street B\"]\n\ntapply(air$pm25, air$street, mean, na.rm = TRUE)\n\nStreet A Street B \n    16.5     12.5 \n\ntapply(air$pm25, air$street, sd, na.rm = TRUE)\n\nStreet A Street B \n2.878492 2.449490 \n\n\ntapply() runs the function once per street. Compare both the averages and the spread.\n\nboxplot(pm25 ~ street, data = air, ylab = \"PM2.5 (µg/m³)\")",
+    "crumbs": [
+      "London Air Quality II"
+    ]
+  },
+  {
+    "objectID": "10-london_airquality_ttests.html#is-mean-pollution-different-between-two-streets",
+    "href": "10-london_airquality_ttests.html#is-mean-pollution-different-between-two-streets",
+    "title": "London Air Quality II",
+    "section": "",
+    "text": "Use the same practice CSV and compare PM₂.₅ on Street A and Street B. The example treats each row as a separate sampling point and assumes observations are independent. For your fieldwork, decide what counts as one observation before comparing groups.\n\nair &lt;- read.csv(\"data/london-air-quality-practice.csv\")\nstreet_a &lt;- air$pm25[air$street == \"Street A\"]\nstreet_b &lt;- air$pm25[air$street == \"Street B\"]\n\ntapply(air$pm25, air$street, mean, na.rm = TRUE)\n\nStreet A Street B \n    16.5     12.5 \n\ntapply(air$pm25, air$street, sd, na.rm = TRUE)\n\nStreet A Street B \n2.878492 2.449490 \n\n\ntapply() runs the function once per street. Compare both the averages and the spread.\n\nboxplot(pm25 ~ street, data = air, ylab = \"PM2.5 (µg/m³)\")",
+    "crumbs": [
+      "London Air Quality II"
+    ]
+  },
+  {
+    "objectID": "10-london_airquality_ttests.html#test-the-difference-in-means",
+    "href": "10-london_airquality_ttests.html#test-the-difference-in-means",
+    "title": "London Air Quality II",
+    "section": "Test the difference in means",
+    "text": "Test the difference in means\n\nmean(street_a, na.rm = TRUE) - mean(street_b, na.rm = TRUE)\n\n[1] 4\n\nt.test(street_a, street_b)\n\n\n    Welch Two Sample t-test\n\ndata:  street_a and street_b\nt = 2.9933, df = 13.651, p-value = 0.009907\nalternative hypothesis: true difference in means is not equal to 0\n95 percent confidence interval:\n 1.127009 6.872991\nsample estimates:\nmean of x mean of y \n     16.5      12.5 \n\n\nThe default is Welch’s two-sample t-test. It tests whether the two population means are equal while allowing the groups to have different variances. Report the mean difference in µg/m³ (Street A minus Street B), the 95% confidence interval and the p-value. A small p-value indicates that a test statistic this extreme would be unusual if the population means were equal and the test assumptions held.",
+    "crumbs": [
+      "London Air Quality II"
+    ]
+  },
+  {
+    "objectID": "10-london_airquality_ttests.html#match-the-analysis-to-your-fieldwork",
+    "href": "10-london_airquality_ttests.html#match-the-analysis-to-your-fieldwork",
+    "title": "London Air Quality II",
+    "section": "Match the analysis to your fieldwork",
+    "text": "Match the analysis to your fieldwork\n\nSeparate points on each street. Use the two-sample approach if the observations are reasonably independent. Check for strong skew or outliers, particularly with few points.\nSeveral readings per stop. If the target is a comparison of sampling points, summarise readings within each point first. Nearby points may still share conditions.\nMatched measurements. For a genuine pairing, such as two conditions measured at each of the same stops, align by stop ID and check that each complete pair appears once before using t.test(before, after, paired = TRUE).\n\nField task. Compare one pollutant across two street groups using consistent units. Include sample sizes, a plot and a short interpretation. Limit your conclusion to the locations and conditions you sampled.",
+    "crumbs": [
+      "London Air Quality II"
+    ]
+  },
+  {
+    "objectID": "r-basics.html",
+    "href": "r-basics.html",
+    "title": "R Essentials for London Air Quality",
+    "section": "",
+    "text": "This lesson is for Geography with Social Data Science students using R for the first time. You’ll practise opening a monitor export, checking what it contains and making a plot before analysing your own London street measurements.",
+    "crumbs": [
+      "R Essentials for London Air Quality"
+    ]
+  },
+  {
+    "objectID": "r-basics.html#run-your-first-r-code",
+    "href": "r-basics.html#run-your-first-r-code",
+    "title": "R Essentials for London Air Quality",
+    "section": "Run your first R code",
+    "text": "Run your first R code\nOpen your working folder in Positron with File → Open Folder. Use the session picker to start or select R. Type 2 + 3 in the Console and press Enter. R prints [1] 5.\nCreate a text file and save it as air-quality.R. Put the code below in the script. To run it, select both lines and press Cmd+Enter on macOS or Ctrl+Enter on Windows/Linux. The Console shows the result.\n\nreadings &lt;- c(12, 15, 18)\nmean(readings)\n\n[1] 15\n\n\nc() combines three values into a vector. The arrow &lt;- saves that vector as readings. The function mean() calculates its average. Keep your code in the script so you can rerun it later.",
+    "crumbs": [
+      "R Essentials for London Air Quality"
+    ]
+  },
+  {
+    "objectID": "r-basics.html#import-and-check-a-csv",
+    "href": "r-basics.html#import-and-check-a-csv",
+    "title": "R Essentials for London Air Quality",
+    "section": "Import and check a CSV",
+    "text": "Import and check a CSV\nThe practice CSV contains simulated readings from two London street settings. Each row represents a different sampling point. pm25 and pm10 are particulate matter concentrations in µg/m³. The example assumes your monitor records both. Use the measures and units shown in your own export.\nThe CSV is included with the project. If you’re following the website online, download it and save it in a folder called data inside your working folder.\n\nair &lt;- read.csv(\"data/london-air-quality-practice.csv\")\nhead(air, 3)\n\n  site_id   street pm25 pm10\n1     A01 Street A   14   28\n2     A02 Street A   18   32\n3     A03 Street A   12   27\n\nstr(air)\n\n'data.frame':   16 obs. of  4 variables:\n $ site_id: chr  \"A01\" \"A02\" \"A03\" \"A04\" ...\n $ street : chr  \"Street A\" \"Street A\" \"Street A\" \"Street A\" ...\n $ pm25   : int  14 18 12 21 16 19 15 17 9 15 ...\n $ pm10   : int  28 32 27 35 29 35 34 32 20 29 ...\n\ntable(air$street)\n\n\nStreet A Street B \n       8        8 \n\n\nhead() previews the first rows. str() shows whether columns are numeric or text. table() counts rows per street. Use View(air) in Positron to open the data in the Data Explorer. If R cannot find the file, run getwd() to check where it is looking.",
+    "crumbs": [
+      "R Essentials for London Air Quality"
+    ]
+  },
+  {
+    "objectID": "r-basics.html#select-readings-and-summarise-them",
+    "href": "r-basics.html#select-readings-and-summarise-them",
+    "title": "R Essentials for London Air Quality",
+    "section": "Select readings and summarise them",
+    "text": "Select readings and summarise them\n\nstreet_a &lt;- air$pm25[air$street == \"Street A\"]\nsummary(street_a)\n\n   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. \n  12.00   14.75   16.50   16.50   18.25   21.00 \n\nsd(street_a, na.rm = TRUE)\n\n[1] 2.878492\n\n\n$ selects a column. Brackets keep the values for rows where the street label matches. summary() shows the minimum, quartiles, median, mean and maximum. The standard deviation from sd() describes spread around the mean in the original units. na.rm = TRUE leaves missing values out of that calculation. Check and report how many readings are missing when you use your own file.",
+    "crumbs": [
+      "R Essentials for London Air Quality"
+    ]
+  },
+  {
+    "objectID": "r-basics.html#plot-and-compare",
+    "href": "r-basics.html#plot-and-compare",
+    "title": "R Essentials for London Air Quality",
+    "section": "Plot and compare",
+    "text": "Plot and compare\n\nboxplot(pm25 ~ street, data = air, ylab = \"PM2.5 (µg/m³)\")\n\n\n\n\n\n\n\n\nThe formula pm25 ~ street tells R to plot PM₂.₅ by street. Find the plot under Plots in Positron. The line inside each box marks the median. The box spans the middle half of the readings. Which street has the higher median? How much do the groups overlap?",
+    "crumbs": [
+      "R Essentials for London Air Quality"
+    ]
+  },
+  {
+    "objectID": "r-basics.html#before-using-your-field-data",
+    "href": "r-basics.html#before-using-your-field-data",
+    "title": "R Essentials for London Air Quality",
+    "section": "Before using your field data",
+    "text": "Before using your field data\nKeep the raw export and work from a copy. Record the street, sampling point, time, pollutant and units. Check that the concentration column imported as numeric and that zero readings and missing values are distinguishable. If you took several readings at one stop, keep a point or visit identifier so you can account for repeat measurements.\nNext, use London Air Quality I to explore two pollutants measured together, then London Air Quality II to compare streets.",
+    "crumbs": [
+      "R Essentials for London Air Quality"
+    ]
+  },
+  {
+    "objectID": "index.html#getting-started-with-the-learning-materials-length-001351",
+    "href": "index.html#getting-started-with-the-learning-materials-length-001351",
+    "title": "Quantitative Skills (QSkills)",
+    "section": "Getting Started with the Learning Materials (Length: 00:13:51)",
+    "text": "Getting Started with the Learning Materials (Length: 00:13:51)\n\n\n\n\n\n\n\n\n\n[Watch on YouTube]",
+    "crumbs": [
+      "Module Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#self-guided-flipped-learning-approach",
+    "href": "index.html#self-guided-flipped-learning-approach",
+    "title": "Quantitative Skills (QSkills)",
+    "section": "Self-Guided & Flipped Learning Approach",
+    "text": "Self-Guided & Flipped Learning Approach\nThis strand follows a more relaxed teaching structure. You will work independently at your own pace, with guidance provided along the way. We expect you to engage with the learning materials - supported by online tutorials, coding instructions, and guidance videos - before going into the computer practical sessions. This allows our session time to be used for discussion, problem-solving, and hands-on practice.",
+    "crumbs": [
+      "Module Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#computer-practical-sessions-timetable",
+    "href": "index.html#computer-practical-sessions-timetable",
+    "title": "Quantitative Skills (QSkills)",
+    "section": "Computer Practical Sessions & Timetable",
+    "text": "Computer Practical Sessions & Timetable\nThere are 10 computer practical sessions throughout Term 1, all delivered in-person and facilitated by Postgraduate Teaching Assistants (PGTAs).\nAll sessions take place every Wednesday between 9:00am and 12:00pm. The entire Geography cohort has been split into three groups (Computer Groups A, B, C and D), with practicals delivered separately in one-hour, back-to-back sessions each week to each group. The schedule is as follows:\n\nGroup A: 09:00am–10:00am, Room 422/423 Birkbeck Malet Street – Public Cluster\nGroup B: 10:00am–11:00am, Room 422/423 Birkbeck Malet Street – Public Cluster\nGroup C: 11:00am–12:00pm, Room 422/423 Birkbeck Malet Street - Public Cluster\nGroup D: 11:00am–12:00pm, 2.23 Public Cluster - Chadwick Building\n\n\n\n\n\n\n\nImportant\n\n\n\nThe above locations for Group A, B, C and D are public clusters with PC workstations. Since you will mostly be working through the materials at your own pace, often on your own laptops with RStudio installed, we highly recommend that you bring your own laptop to the computer practicals for ease of use.\n\n\nThe topics for the course are as follows:\n\n\n\n\n\n\n\n\nDates\nWeek\nList of Topics\n\n\n\n\n07/10/26\n01\nIntroduction I: Basics Building Blocks for Computing in RStudio\n\n\n14/10/26\n02\nIntroduction II: Handling Data Structures in RStudio\n\n\n21/10/26\n03\nExamining I: Frequency Distribution\n\n\n28/10/26\n04\nExamining II: Descriptive Statistics\n\n\n04/11/26\n05\nExamining III: Types of Data Visualisation\n\n\n\n\nReading Week\n\n\n18/11/26\n06\nSourcing Data I: Acquiring Data From Open Sources\n\n\n25/11/26\n07\nSourcing Data II: Sampling from Probability Distribution\n\n\n02/12/26\n08\nAir Quality I: Correlation & Regression\n\n\n09/12/26\n09\nAir Quality II: Box Plots and T-tests\n\n\n16/12/26\n10\nPortfolio Surgery & Wrap-up.",
+    "crumbs": [
+      "Module Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#questions-discusson-forum-on-moodle",
+    "href": "index.html#questions-discusson-forum-on-moodle",
+    "title": "Quantitative Skills (QSkills)",
+    "section": "Questions & Discusson Forum on Moodle",
+    "text": "Questions & Discusson Forum on Moodle\nOn Moodle, you can use the Ask a question section to post general queries about the learning materials on this website, as well as any technical issues you encounter during your self-guided study. Please refer to that section on Moodle, and either I or one of the PGTAs will respond with solutions.\n\n\n\n\n\n\nImportant\n\n\n\nWhile Moodle is the central point for information and communications for GEOG0186 Quantitative Skills and where all formative assessments are submitted. However, note that all the weekly content will only be hosted on this dedicated web page and not on Moodle.",
+    "crumbs": [
+      "Module Overview"
+    ]
+  },
+  {
+    "objectID": "01-what_is_rstudio.html",
+    "href": "01-what_is_rstudio.html",
+    "title": "What is RStudio (or R)?",
+    "section": "",
+    "text": "R (or RStudio) is a statistical programming package that allows users to carry out a wide range of statistical analyses. It can also function as GIS software, enabling various types of analysis on geographical data. In the same way, it can be used for data management and geoprocessing—for example, importing different types of data, whether non-spatial or spatial, and preparing them for analysis.\nThere are two versions:\n\n\n\n\n\n\n\n\n\nThe famous icon on the left is the version for R (Base), and the one on the right is the version for RStudio. Both software packages are the same. The only difference is that RStudio is attractive, intuitive, and more importantly, it is user-friendly than Base R. So, we will be using this version (i.e., RStudio) throughout this workshop.\nLet us talk about the installation of RStudio on your personal computer.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n[Watch on YouTube]\nRStudio is an open-source software, it is free. It is widely recommended in data science, scientific research, and technical communication because it is easy to access, download, and install.\nTo use RStudio, you must first install R (Base) before installing RStudio. Follow the steps below to install both programs for your operating system (Windows or Mac).\nSteps\n\nDownload the R (Base) installer from the table below, then run the file to complete the installation.\nNext, download the RStudio installer from the table below, then run the file to complete the installation.\n\n\n\n\nOS User type\nR (Base)\nRStudio Desktop\n\n\n\n\nWindows\nR-4.6.1-win.exe\nRStudio-2026.09.0-174.exe\n\n\nMAC (Intel)\nR-4.6.1-x86_64.pkg\nRStudio-2026.09.0-174.dmg\n\n\nMAC (M1-5)\nR-4.6.1-arm64.pkg\nRStudio-2026.09.0-174.dmg\n\n\n\n\n\n\n\n\n\nImportant\n\n\n\nR (Base) is very particular about the operating system! Please be sure to use the correct installer for your computer:\n\nWindows users: use the files in the first row.\nMac (Intel) users: use the files in the second row.\nMac (M1-5 chip) users: use the files in the third row.\n\n\n\nThis section covers how to download and install RStudio for it to be used locally on your machine. There are several ways to access RStudio:\n\nDirectly through UCL Workstation PC\nRemotely through the UCL Desktop@Anywhere remote service with your laptop.\n\nLet us quickly go through these options.\n\n\n\n\n\n\n\n\n\n\n\n\n[Watch on YouTube]\nGo to any PC cluster in UCL and simply log on to a computer. Use the UCL Applications tool to access the desired software.\n\n\n\n\n\n\n\n\n\n\n\n\n[Watch on YouTube]\nTo use RStudio (or any other software which UCL provides as service to students) remotely from your laptop/PC/tablet, you can:\n\nGo to https://www.ucl.ac.uk/isd/services/computers/remote-access/desktopucl-anywhere.\nClick on the blue button that says: “Log in to Desktop @ UCL Anywhere.”\nYou will be prompted to enter your UCL username (username@ucl.ac.uk) and password. Enter the correct credentials to gain access to the remote portal.\nIf you see the option “Use Web Browser”, select it to run the remote functions directly in your browser without installing the Citrix Workspace application.\nYou should now see a Desktop @ UCL Anywhere button – click this button to complete the login. At this point, it will feel as though you are using a UCL workstation in a cluster room or library, but remotely.\nOn the desktop, click the UCL Applications icon and search for RStudio.\nSelect the latest version available (check the year) and open it with a single click (not multiple clicks).\n\nVoilà! You now have remote access to RStudio.",
+    "crumbs": [
+      "What is RStudio (or R)?"
+    ]
+  },
+  {
+    "objectID": "01-what_is_rstudio.html#rstudio-and-downloading-it-length-001135",
+    "href": "01-what_is_rstudio.html#rstudio-and-downloading-it-length-001135",
+    "title": "What is RStudio (or R)?",
+    "section": "",
+    "text": "[Watch on YouTube]\nRStudio is an open-source software, it is free. It is widely recommended in data science, scientific research, and technical communication because it is easy to access, download, and install.\nTo use RStudio, you must first install R (Base) before installing RStudio. Follow the steps below to install both programs for your operating system (Windows or Mac).\nSteps\n\nDownload the R (Base) installer from the table below, then run the file to complete the installation.\nNext, download the RStudio installer from the table below, then run the file to complete the installation.\n\n\n\n\nOS User type\nR (Base)\nRStudio Desktop\n\n\n\n\nWindows\nR-4.6.1-win.exe\nRStudio-2026.09.0-174.exe\n\n\nMAC (Intel)\nR-4.6.1-x86_64.pkg\nRStudio-2026.09.0-174.dmg\n\n\nMAC (M1-5)\nR-4.6.1-arm64.pkg\nRStudio-2026.09.0-174.dmg\n\n\n\n\n\n\n\n\n\nImportant\n\n\n\nR (Base) is very particular about the operating system! Please be sure to use the correct installer for your computer:\n\nWindows users: use the files in the first row.\nMac (Intel) users: use the files in the second row.\nMac (M1-5 chip) users: use the files in the third row.\n\n\n\nThis section covers how to download and install RStudio for it to be used locally on your machine. There are several ways to access RStudio:\n\nDirectly through UCL Workstation PC\nRemotely through the UCL Desktop@Anywhere remote service with your laptop.\n\nLet us quickly go through these options.",
+    "crumbs": [
+      "What is RStudio (or R)?"
+    ]
+  },
+  {
+    "objectID": "01-what_is_rstudio.html#access-through-workstation-ucl-applications-store-length-000500",
+    "href": "01-what_is_rstudio.html#access-through-workstation-ucl-applications-store-length-000500",
+    "title": "What is RStudio (or R)?",
+    "section": "",
+    "text": "[Watch on YouTube]\nGo to any PC cluster in UCL and simply log on to a computer. Use the UCL Applications tool to access the desired software.",
+    "crumbs": [
+      "What is RStudio (or R)?"
+    ]
+  },
+  {
+    "objectID": "01-what_is_rstudio.html#remotely-access-through-ucl-desktopanywhere-length-000934",
+    "href": "01-what_is_rstudio.html#remotely-access-through-ucl-desktopanywhere-length-000934",
+    "title": "What is RStudio (or R)?",
+    "section": "",
+    "text": "[Watch on YouTube]\nTo use RStudio (or any other software which UCL provides as service to students) remotely from your laptop/PC/tablet, you can:\n\nGo to https://www.ucl.ac.uk/isd/services/computers/remote-access/desktopucl-anywhere.\nClick on the blue button that says: “Log in to Desktop @ UCL Anywhere.”\nYou will be prompted to enter your UCL username (username@ucl.ac.uk) and password. Enter the correct credentials to gain access to the remote portal.\nIf you see the option “Use Web Browser”, select it to run the remote functions directly in your browser without installing the Citrix Workspace application.\nYou should now see a Desktop @ UCL Anywhere button – click this button to complete the login. At this point, it will feel as though you are using a UCL workstation in a cluster room or library, but remotely.\nOn the desktop, click the UCL Applications icon and search for RStudio.\nSelect the latest version available (check the year) and open it with a single click (not multiple clicks).\n\nVoilà! You now have remote access to RStudio.",
+    "crumbs": [
+      "What is RStudio (or R)?"
+    ]
+  },
+  {
+    "objectID": "09-london_airquality_relationships.html",
+    "href": "09-london_airquality_relationships.html",
+    "title": "London Air Quality I",
+    "section": "",
+    "text": "The GEOG0186 practical explores relationships using readings from London monitoring stations. Here you’ll use the same scatterplot, correlation and regression workflow with paired pollutant measurements of the sort you might collect with a handheld monitor. Practise on the simulated CSV from R Essentials, then repeat the analysis with your own field data.\nOpen a new R script in Positron and run these chunks from top to bottom. Start with one street so the graph addresses a relationship within that street.\n\nair &lt;- read.csv(\"data/london-air-quality-practice.csv\")\none_street &lt;- subset(air, street == \"Street A\")\none_street &lt;- one_street[complete.cases(one_street[c(\"pm25\", \"pm10\")]), ]\nnrow(one_street)\n\n[1] 8\n\n\ncomplete.cases() keeps only rows with both measurements. With your field data, check how many rows were dropped and investigate why.",
+    "crumbs": [
+      "London Air Quality I"
+    ]
+  },
+  {
+    "objectID": "09-london_airquality_relationships.html#do-two-pollutants-vary-together",
+    "href": "09-london_airquality_relationships.html#do-two-pollutants-vary-together",
+    "title": "London Air Quality I",
+    "section": "",
+    "text": "The GEOG0186 practical explores relationships using readings from London monitoring stations. Here you’ll use the same scatterplot, correlation and regression workflow with paired pollutant measurements of the sort you might collect with a handheld monitor. Practise on the simulated CSV from R Essentials, then repeat the analysis with your own field data.\nOpen a new R script in Positron and run these chunks from top to bottom. Start with one street so the graph addresses a relationship within that street.\n\nair &lt;- read.csv(\"data/london-air-quality-practice.csv\")\none_street &lt;- subset(air, street == \"Street A\")\none_street &lt;- one_street[complete.cases(one_street[c(\"pm25\", \"pm10\")]), ]\nnrow(one_street)\n\n[1] 8\n\n\ncomplete.cases() keeps only rows with both measurements. With your field data, check how many rows were dropped and investigate why.",
+    "crumbs": [
+      "London Air Quality I"
+    ]
+  },
+  {
+    "objectID": "09-london_airquality_relationships.html#draw-a-scatterplot",
+    "href": "09-london_airquality_relationships.html#draw-a-scatterplot",
+    "title": "London Air Quality I",
+    "section": "Draw a scatterplot",
+    "text": "Draw a scatterplot\n\nplot(\n  one_street$pm25, one_street$pm10,\n  xlab = \"PM2.5 (µg/m³)\", ylab = \"PM10 (µg/m³)\",\n  pch = 19\n)\nfit &lt;- lm(pm10 ~ pm25, data = one_street)\nabline(fit, col = \"#176B5B\", lwd = 2)\n\n\n\n\n\n\n\n\nEach dot uses two readings from the same sampling point. Before interpreting the line, look for a clear direction or a point that might strongly influence the fit.",
+    "crumbs": [
+      "London Air Quality I"
+    ]
+  },
+  {
+    "objectID": "09-london_airquality_relationships.html#describe-the-relationship",
+    "href": "09-london_airquality_relationships.html#describe-the-relationship",
+    "title": "London Air Quality I",
+    "section": "Describe the relationship",
+    "text": "Describe the relationship\n\ncor(one_street$pm25, one_street$pm10)\n\n[1] 0.8160943\n\ncoef(fit)[\"pm25\"]\n\n     pm25 \n0.8965517 \n\n\nThe first result is the Pearson correlation. It ranges from −1 to +1 and describes the direction and strength of a straight-line relationship. The second is the fitted slope. It gives the difference in fitted PM₁₀, in µg/m³, associated with a 1 µg/m³ higher PM₂.₅ reading.\nPM₂.₅ is part of PM₁₀, so some association is expected. A relationship between these readings cannot by itself identify a pollution source.\nField task. Choose two measures taken at the same points and times. If your device records only one pollutant, use a numeric field variable measured alongside it, such as a traffic count. Label both axes with units and describe the pattern in one or two sentences. If your data include repeated observations at one stop, identify those repeats before drawing conclusions about differences between locations.",
+    "crumbs": [
+      "London Air Quality I"
+    ]
+  }
+]
