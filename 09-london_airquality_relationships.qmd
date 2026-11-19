@@ -1,0 +1,46 @@
+---
+title: London Air Quality I
+---
+
+## Do two pollutants vary together?
+
+The GEOG0186 practical explores relationships using readings from London monitoring stations. Here you’ll use the same scatterplot, correlation and regression workflow with paired pollutant measurements of the sort you might collect with a handheld monitor. Practise on the simulated CSV from [R Essentials](r-basics.qmd), then repeat the analysis with your own field data.
+
+Open a new R script in Positron and run these chunks from top to bottom. Start with one street so the graph addresses a relationship **within** that street.
+
+```{r}
+air <- read.csv("data/london-air-quality-practice.csv")
+one_street <- subset(air, street == "Street A")
+one_street <- one_street[complete.cases(one_street[c("pm25", "pm10")]), ]
+nrow(one_street)
+```
+
+`complete.cases()` keeps only rows with both measurements. With your field data, check how many rows were dropped and investigate why.
+
+## Draw a scatterplot
+
+```{r}
+#| fig-alt: "Scatterplot with an upward fitted line for PM2.5 and PM10 on Street A."
+plot(
+  one_street$pm25, one_street$pm10,
+  xlab = "PM2.5 (µg/m³)", ylab = "PM10 (µg/m³)",
+  pch = 19
+)
+fit <- lm(pm10 ~ pm25, data = one_street)
+abline(fit, col = "#176B5B", lwd = 2)
+```
+
+Each dot uses two readings from the same sampling point. Before interpreting the line, look for a clear direction or a point that might strongly influence the fit.
+
+## Describe the relationship
+
+```{r}
+cor(one_street$pm25, one_street$pm10)
+coef(fit)["pm25"]
+```
+
+The first result is the Pearson correlation. It ranges from −1 to +1 and describes the direction and strength of a straight-line relationship. The second is the fitted slope. It gives the difference in fitted PM₁₀, in µg/m³, associated with a 1 µg/m³ higher PM₂.₅ reading.
+
+PM₂.₅ is part of PM₁₀, so some association is expected. A relationship between these readings cannot by itself identify a pollution source.
+
+**Field task.** Choose two measures taken at the same points and times. If your device records only one pollutant, use a numeric field variable measured alongside it, such as a traffic count. Label both axes with units and describe the pattern in one or two sentences. If your data include repeated observations at one stop, identify those repeats before drawing conclusions about differences between locations.

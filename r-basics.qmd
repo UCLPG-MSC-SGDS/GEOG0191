@@ -1,0 +1,62 @@
+---
+title: R Essentials for London Air Quality
+---
+
+This lesson is for Geography with Social Data Science students using R for the first time. You’ll practise opening a monitor export, checking what it contains and making a plot before analysing your own London street measurements.
+
+::: {.callout-note}
+The first two pages are reproduced from GEOG0186 and refer to its timetable and RStudio setup. The GEOG0191 workflow below uses **Positron**. Check your GEOG0191 teaching materials for session details.
+:::
+
+## Run your first R code
+
+Open your working folder in Positron with **File → Open Folder**. Use the session picker to start or select **R**. Type `2 + 3` in the Console and press **Enter**. R prints `[1] 5`.
+
+Create a text file and save it as `air-quality.R`. Put the code below in the script. To run it, select both lines and press **Cmd+Enter** on macOS or **Ctrl+Enter** on Windows/Linux. The Console shows the result.
+
+```{r}
+readings <- c(12, 15, 18)
+mean(readings)
+```
+
+`c()` combines three values into a vector. The arrow `<-` saves that vector as `readings`. The function `mean()` calculates its average. Keep your code in the script so you can rerun it later.
+
+## Import and check a CSV
+
+The [practice CSV](data/london-air-quality-practice.csv) contains **simulated** readings from two London street settings. Each row represents a different sampling point. `pm25` and `pm10` are particulate matter concentrations in µg/m³. The example assumes your monitor records both. Use the measures and units shown in your own export.
+
+The CSV is included with the project. If you’re following the website online, download it and save it in a folder called `data` inside your working folder.
+
+```{r}
+air <- read.csv("data/london-air-quality-practice.csv")
+head(air, 3)
+str(air)
+table(air$street)
+```
+
+`head()` previews the first rows. `str()` shows whether columns are numeric or text. `table()` counts rows per street. Use `View(air)` in Positron to open the data in the Data Explorer. If R cannot find the file, run `getwd()` to check where it is looking.
+
+## Select readings and summarise them
+
+```{r}
+street_a <- air$pm25[air$street == "Street A"]
+summary(street_a)
+sd(street_a, na.rm = TRUE)
+```
+
+`$` selects a column. Brackets keep the values for rows where the street label matches. `summary()` shows the minimum, quartiles, median, mean and maximum. The standard deviation from `sd()` describes spread around the mean in the original units. `na.rm = TRUE` leaves missing values out of that calculation. Check and report how many readings are missing when you use your own file.
+
+## Plot and compare
+
+```{r}
+#| fig-alt: "Boxplots comparing simulated PM2.5 readings on Streets A and B."
+boxplot(pm25 ~ street, data = air, ylab = "PM2.5 (µg/m³)")
+```
+
+The formula `pm25 ~ street` tells R to plot PM₂.₅ by street. Find the plot under **Plots** in Positron. The line inside each box marks the median. The box spans the middle half of the readings. Which street has the higher median? How much do the groups overlap?
+
+## Before using your field data
+
+Keep the raw export and work from a copy. Record the street, sampling point, time, pollutant and units. Check that the concentration column imported as numeric and that zero readings and missing values are distinguishable. If you took several readings at one stop, keep a point or visit identifier so you can account for repeat measurements.
+
+Next, use [London Air Quality I](09-london_airquality_relationships.qmd) to explore two pollutants measured together, then [London Air Quality II](10-london_airquality_ttests.qmd) to compare streets.

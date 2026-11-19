@@ -1,0 +1,40 @@
+---
+title: London Air Quality II
+---
+
+## Is mean pollution different between two streets?
+
+Use the same practice CSV and compare PM₂.₅ on Street A and Street B. The example treats each row as a separate sampling point and assumes observations are independent. For your fieldwork, decide what counts as one observation before comparing groups.
+
+```{r}
+air <- read.csv("data/london-air-quality-practice.csv")
+street_a <- air$pm25[air$street == "Street A"]
+street_b <- air$pm25[air$street == "Street B"]
+
+tapply(air$pm25, air$street, mean, na.rm = TRUE)
+tapply(air$pm25, air$street, sd, na.rm = TRUE)
+```
+
+`tapply()` runs the function once per street. Compare both the averages and the spread.
+
+```{r}
+#| fig-alt: "Boxplots showing generally higher PM2.5 on Street A than Street B."
+boxplot(pm25 ~ street, data = air, ylab = "PM2.5 (µg/m³)")
+```
+
+## Test the difference in means
+
+```{r}
+mean(street_a, na.rm = TRUE) - mean(street_b, na.rm = TRUE)
+t.test(street_a, street_b)
+```
+
+The default is Welch’s two-sample t-test. It tests whether the two population means are equal while allowing the groups to have different variances. Report the mean difference in µg/m³ (Street A minus Street B), the 95% confidence interval and the p-value. A small p-value indicates that a test statistic this extreme would be unusual if the population means were equal and the test assumptions held.
+
+## Match the analysis to your fieldwork
+
+- **Separate points on each street.** Use the two-sample approach if the observations are reasonably independent. Check for strong skew or outliers, particularly with few points.
+- **Several readings per stop.** If the target is a comparison of sampling points, summarise readings within each point first. Nearby points may still share conditions.
+- **Matched measurements.** For a genuine pairing, such as two conditions measured at each of the same stops, align by stop ID and check that each complete pair appears once before using `t.test(before, after, paired = TRUE)`.
+
+**Field task.** Compare one pollutant across two street groups using consistent units. Include sample sizes, a plot and a short interpretation. Limit your conclusion to the locations and conditions you sampled.

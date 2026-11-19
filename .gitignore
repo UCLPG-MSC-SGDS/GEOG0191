@@ -1,0 +1,9 @@
+/.quarto/
+/_site/
+.Rhistory
+.Rproj.user/
+
+**/*.quarto_ipynb
+
+/index_cache/
+/01-what_is_rstudio_cache/
